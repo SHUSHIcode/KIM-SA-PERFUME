@@ -1465,44 +1465,56 @@ function copyToClipboard(text){
     navigator.clipboard.writeText(text).then(()=> console.log("Copied!"));
 }
 
-// Kiểm tra điện thoại
+// Kiểm tra thiết bị di động
 function isMobile() {
     return /Mobi|Android|iPhone/i.test(navigator.userAgent);
 }
 
-// Gửi Zalo (nâng cao)
+// Chuyển số điện thoại VN sang định dạng quốc tế +84
+function formatPhoneToInternational(phone){
+    if(phone.startsWith("0")){
+        return "84" + phone.slice(1);
+    }
+    return phone;
+}
+
+// Gửi Zalo
 function sendZalo() {
     let message = getOrderMessage();
     let encodedMessage = encodeURIComponent(message);
-    let zaloNumber = "0968355381";
+
+    // Số Zalo đã được bạn cung cấp
+    let zaloNumber = formatPhoneToInternational("0968355381"); // -> 84968355381
 
     if(isMobile()){
-        // Trên điện thoại: nhảy trực tiếp vào chat Zalo
+        // Điện thoại: mở chat trực tiếp
         window.open("https://zalo.me/" + zaloNumber + "?text=" + encodedMessage, "_blank");
     } else {
-        // Trên PC: mở Zalo Web và điền sẵn nội dung
+        // PC: copy nội dung, mở Zalo Web
         copyToClipboard(message);
-        alert("Đơn hàng đã copy! Mở Zalo Web và nhấn Ctrl+V → Enter để gửi.");
+        alert("✅ Nội dung đơn hàng đã copy! Mở Zalo Web và nhấn Ctrl+V → Enter để gửi.");
         window.open("https://chat.zalo.me/", "_blank");
     }
 }
 
-// Gửi Messenger (nâng cao)
+// Gửi Messenger
 function sendMessenger() {
     let message = getOrderMessage();
     let encodedMessage = encodeURIComponent(message);
-    let pageUsername = "yourpageusername"; // Thay username page Messenger
+
+    // Thay username Messenger bằng tên page từ link bạn gửi
+    let pageUsername = "kim.sabeauty";
 
     if(isMobile()){
-        // Trên điện thoại: mở Messenger Web chat với page, tự động nhảy
-        window.open("https://0968355381/" + pageUsername + "?ref=" + encodedMessage, "_blank");
+        // Điện thoại: mở Messenger chat page
+        window.open("https://m.me/" + pageUsername + "?ref=" + encodedMessage, "_blank");
     } else {
-        // Trên PC: copy nội dung, mở Messenger Web chat
+        // PC: copy nội dung, mở Messenger Web
         copyToClipboard(message);
-        alert("Đơn hàng đã copy! Mở Messenger Web và nhấn Ctrl+V → Enter để gửi.");
-        window.open("https://www.facebook.com/kim.sabeauty?mibextid=wwXIfr&rdid=qFMO1x5YkQPKrJbo&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Dvs4P8RiA%2F%3Fmibextid%3DwwXIfr#/t/" + pageUsername, "_blank");
+        alert("✅ Nội dung đơn hàng đã copy! Mở Messenger Web và nhấn Ctrl+V → Enter để gửi.");
+        window.open("https://www.messenger.com/t/" + pageUsername, "_blank");
     }
-}
+
 </script>
 </body>
 </html>
